@@ -1,0 +1,419 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>С Днём Рождения 🎂</title>
+<style>
+  :root{
+    --warm1: #fff0e6;
+    --warm2: #ffd8b5;
+    --accent: #ff6b6b;
+    --card: rgba(255,255,255,0.9);
+    --glass: rgba(255,255,255,0.65);
+  }
+  html,body{height:100%;margin:0;font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif;background: linear-gradient(135deg,#FFF6EE 0%, #FFEFD6 40%, #FFF0C8 100%);color:#3b2f2f}
+  .wrap{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:30px;padding:30px;box-sizing:border-box;position:relative;overflow:hidden;}
+  h1{margin:0;font-size:28px;letter-spacing:0.2px}
+  /* cake area */
+  .stage{width:380px;max-width:90vw;position:relative;display:flex;flex-direction:column;align-items:center;gap:12px}
+  .plate{width:260px;height:18px;background:linear-gradient(90deg,#f2d3b8,#f6e1ce);border-radius:50%;box-shadow:0 6px 18px rgba(0,0,0,0.12);transform:translateY(10px)}
+  .cake{position:relative;display:flex;flex-direction:column;align-items:center;gap:10px;transform-origin:center;filter:drop-shadow(0 10px 25px rgba(0,0,0,0.12));}
+  .tier{width:220px;height:60px;border-radius:12px;background:linear-gradient(180deg,#ffecd5,#ffd8b5);display:flex;align-items:center;justify-content:center;box-shadow:inset 0 -6px 18px rgba(0,0,0,0.04);transform:translateY(40px) scale(.9);opacity:0}
+  .tier.small{width:160px;height:44px;border-radius:12px;background:linear-gradient(180deg,#ffe9d1,#ffd0aa)}
+  .tier.top{width:100px;height:34px;border-radius:10px;background:linear-gradient(180deg,#fff1e0,#ffd9b2)}
+  .frosting{position:absolute;top:-10px;left:0;right:0;height:16px;border-radius:100px;background:linear-gradient(90deg,#fff,#ffe6d5);opacity:.95;box-shadow:0 4px 8px rgba(0,0,0,0.06)}
+  /* candle */
+  .candle{position:absolute;top:-36px;width:10px;height:36px;background:linear-gradient(180deg,#fffbff,#ffd8d8);border-radius:4px;left:50%;transform:translateX(-50%) translateY(-10px);opacity:0;box-shadow:0 2px 6px rgba(0,0,0,0.12)}
+  .wick{position:absolute;top:-6px;left:50%;transform:translateX(-50%);}
+  .flame{position:absolute;top:-18px;left:50%;transform:translateX(-50%) scale(0.4);width:18px;height:24px;border-radius:50% 50% 50% 50%;background:linear-gradient(180deg,#ffd66b,#ff8c3b);opacity:0;filter:blur(.6px);transform-origin:center}
+  .flame.lit{animation:flameFlicker 300ms infinite ease-in-out;opacity:1;transform:translateX(-50%) scale(1)}
+  @keyframes flameFlicker {
+    0%{transform:translateX(-50%) scale(0.95) rotate(-3deg)}
+    50%{transform:translateX(-50%) scale(1.05) rotate(2deg)}
+    100%{transform:translateX(-50%) scale(0.98) rotate(-2deg)}
+  }
+  /* assembly animations */
+  .tier.show{transform:translateY(0) scale(1);opacity:1;transition:transform 600ms cubic-bezier(.15,.8,.2,1),opacity 600ms}
+  .candle.show{transform:translateX(-50%) translateY(0);opacity:1;transition:transform 500ms 120ms,opacity 400ms}
+  /* prompt */
+  .prompt{position:absolute;bottom:22px;background:var(--glass);backdrop-filter: blur(6px);padding:10px 18px;border-radius:24px;box-shadow:0 6px 20px rgba(0,0,0,0.08);font-weight:600;cursor:pointer;opacity:0;transform:translateY(12px);transition:all 300ms}
+  .prompt.show{opacity:1;transform:translateY(0);animation:blink 1200ms infinite}
+  @keyframes blink{0%,60%{opacity:1}100%{opacity:.35}}
+  /* letter */
+  .letter{position:fixed;left:50%;transform:translateX(-50%);bottom:-110vh;width:min(920px,94vw);max-height:86vh;overflow:auto;border-radius:16px;background:var(--card);box-shadow:0 30px 80px rgba(0,0,0,0.18);padding:22px 26px;transition:bottom 700ms cubic-bezier(.2,.9,.25,1);z-index:30}
+  .letter.open{bottom:28px}
+  .letter header{display:flex;align-items:center;gap:12px}
+  .avatar{width:56px;height:56px;border-radius:12px;background:linear-gradient(90deg,#ffd7c4,#fff1e6);display:flex;align-items:center;justify-content:center;font-weight:700;color:#7a3f3f}
+  .letter .content{margin-top:12px;white-space:pre-wrap;line-height:1.5;color:#2f2323}
+  .controls{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+  .btn{background:#fff;border:1px solid rgba(0,0,0,0.06);padding:8px 12px;border-radius:10px;cursor:pointer;font-weight:600}
+  /* collage + video */
+ .extras{
+  display:flex;
+  flex-direction:column; /* теперь по вертикали */
+  gap:16px;
+  margin-top:16px;
+  width:100%;
+}
+
+.collage{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:8px;
+  width:100%; /* теперь на всю ширину */
+  border-radius:12px;
+  overflow:hidden;
+}
+
+.collage img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+
+.videoWrap{
+  width:100%;
+  border-radius:12px;
+  overflow:hidden;
+  background:#000;
+}
+.videoWrap video{
+  width:100%;
+  height:auto;
+  display:block;
+}
+
+  /* confetti canvas */
+  canvas.confetti{position:fixed;left:0;top:0;width:100%;height:100%;pointer-events:none;z-index:40}
+  /* footer note */
+  .tiny{font-size:13px;color:#5d4646;opacity:.9;margin-top:14px}
+  /* small animations for memory */
+  .sparkle{position:absolute;right:10%;top:8%;width:14px;height:14px;border-radius:50%;background:linear-gradient(90deg,#fff3b0,#ffd0aa);opacity:.8;box-shadow:0 10px 30px rgba(255,170,110,0.14);filter:blur(1px);animation:spark 3s infinite}
+  @keyframes spark{0%{transform:translateY(0) scale(.6)}50%{transform:translateY(-8px) scale(1.1)}100%{transform:translateY(0) scale(.6)}}
+  /* responsive tweaks */
+  @media (max-width:700px){
+    .collage{width:48%;max-width:40%}
+    .videoWrap{min-width:160px}
+    .stage{width:92%}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div style="text-align:center">
+    <h1>С Днём Рождения 🎉</h1>
+    <p style="margin:8px 0 0 0;color:#5b4949"></p>
+  </div>
+
+  <div class="stage" aria-hidden="true">
+    <div class="cake" id="cake">
+      <div class="tier top" id="tier3">
+        <div class="frosting" style="width:110px;left:50%;transform:translateX(-50%);"></div>
+      </div>
+      <div class="tier small" id="tier2">
+        <div class="frosting" style="width:170px;left:50%;transform:translateX(-50%);"></div>
+      </div>
+      <div class="tier" id="tier1">
+        <div class="frosting" style="width:230px;left:50%;transform:translateX(-50%);"></div>
+      </div>
+
+      <div class="candle" id="candle">
+        <div class="wick"></div>
+        <div class="flame" id="flame"></div>
+      </div>
+    </div>
+
+    <div class="plate" id="plate"></div>
+
+    <div class="prompt" id="prompt">Нажми на экран</div>
+  </div>
+
+  <div style="font-size:13px;color:#654d4d;opacity:.95">С ДНЕМ РОЖДЕНИЯ</div>
+
+  <div class="sparkle" style="--i:1"></div>
+</div>
+
+<!-- letter -->
+<article class="letter" id="letter" aria-hidden="true">
+  <header>
+    <div class="avatar">ME</div>
+    <div>
+      <strong>Для моей самой красивой подруги</strong>
+      <div style="font-size:13px;color:#6b5555">Открой письмо и почувствуй объятие через экран</div>
+    </div>
+  </header>
+
+  <div class="content" id="letterContent" style="margin-top:12px">
+    <!-- content filled by JS -->
+  </div>
+
+  <div class="extras" id="extrasArea" style="display:none">
+    <div class="collage" id="collage">
+      <img src="img1.jpg" alt="img1">
+      <img src="img2.jpg" alt="img2">
+      <img src="img3.jpg" alt="img3">
+      <img src="img4.jpg" alt="img4">
+    </div>
+    <div class="videoWrap">
+      <video controls id="vid" src="video.mp4" poster="" preload="none">Ваш браузер не поддерживает видео.</video>
+    </div>
+  </div>
+
+  <div class="controls">
+    <button class="btn" id="playTune">НАЖМИ НА МЕНЯ</button>
+    <button class="btn" id="saveBtn">СПОКОЙНОЙ НОЧИ</button>
+    <button class="btn" id="closeLetter">Закрыть</button>
+  </div>
+
+  <div class="tiny">HAPPY BIRTH DAY</div>
+</article>
+
+<canvas class="confetti" id="confettiCanvas"></canvas>
+
+<!-- small audio (optional) -->
+<audio id="tune" src="happy_tune.mp3" preload="none"></audio>
+
+<script>
+/* ------------- sequence animations ------------- */
+const tier1 = document.getElementById('tier1');
+const tier2 = document.getElementById('tier2');
+const tier3 = document.getElementById('tier3');
+const candle = document.getElementById('candle');
+const flame = document.getElementById('flame');
+const plate = document.getElementById('plate');
+const prompt = document.getElementById('prompt');
+const letter = document.getElementById('letter');
+const letterContent = document.getElementById('letterContent');
+const extrasArea = document.getElementById('extrasArea');
+const confettiCanvas = document.getElementById('confettiCanvas');
+
+let opened = false;
+
+/* show cake tiers in sequence */
+function assembleCake(){
+  setTimeout(()=>{ tier1.classList.add('show'); }, 400);
+  setTimeout(()=>{ tier2.classList.add('show'); }, 950);
+  setTimeout(()=>{ tier3.classList.add('show'); }, 1500);
+  setTimeout(()=>{ candle.classList.add('show'); }, 1900);
+  setTimeout(()=>{ lightCandle(); }, 2300);
+}
+
+/* light candle animation */
+function lightCandle(){
+  flame.classList.add('lit');
+  // tiny "spark" effect with confetti when lit
+  burstConfetti(12);
+  // show prompt
+  setTimeout(()=>{ prompt.classList.add('show'); }, 600);
+}
+
+/* click anywhere to open letter */
+document.body.addEventListener('click', (e)=>{
+  // If letter already open, ignore clicks inside it for reopening
+  if(!opened){
+    opened = true;
+    openLetter();
+  }
+});
+
+function openLetter(){
+  // reveal letter
+  letter.classList.add('open');
+  // fill letter content (with exact inserted text + added compromise)
+  const myText = `Привет 🙂
+  
+С днём рождения тебя! 🎉 Уже два года, 11 месяцев и 22 дня, как мы дружим, и я правда рад, что у меня есть такой человек, с кем можно и серьёзно обсудить проекты, планы, и просто кринжовать без повода.
+
+Ты очень крутая, умная, упорная и всегда заряжаешь позитивом. Я уважаю, как ты идёшь к своим целям, и уверен, что впереди у тебя только больше побед и классных моментов.
+
+Желаю, чтобы рядом всегда были те, кто поддержит и поймёт; чтобы идей было море, а сил и вдохновения ещё больше. И, конечно, побольше радости, неожиданностей и ярких дней ✨
+
+Спасибо тебе за почти три года дружбы, и я надеюсь, что дальше будет ещё круче 🚀
+
+С днем рождения 🎉🎊. Мирас🤘🏻
+
+К сожалению, я не смогу прийти на твой день рождения. Но я очень хочу, чтобы ты знала, что я думаю о тебе в этот особенный день.`;
+
+  letterContent.textContent = myText;
+
+  // show collage & video
+  extrasArea.style.display = 'flex';
+  // confetti + spotlight to make it memorable
+  bigConfetti();
+  // scroll letter to top
+  setTimeout(()=>{ letter.scrollTo({top:0,behavior:'smooth'}); }, 80);
+}
+
+/* close button */
+document.getElementById('closeLetter').addEventListener('click', (e)=>{
+  e.stopPropagation();
+  letter.classList.remove('open');
+  opened = false;
+});
+
+/* play tune if available */
+document.getElementById('playTune').addEventListener('click', (e)=>{
+  e.stopPropagation();
+  const tune = document.getElementById('tune');
+  if(tune){
+    tune.currentTime = 0;
+    tune.play().catch(()=>{/* Autoplay blocked — user clicked so should play */});
+  }
+});
+
+/* save card as PNG - simple approach using SVG data URL of the letter (approximation) */
+document.getElementById('saveBtn').addEventListener('click', (e)=>{
+  e.stopPropagation();
+  saveLetterAsImage();
+});
+
+/* ---------------- confetti (simple) ---------------- */
+const ctx = confettiCanvas.getContext('2d');
+let confettiList = [];
+function resizeCanvas(){
+  confettiCanvas.width = window.innerWidth;
+  confettiCanvas.height = window.innerHeight;
+}
+resizeCanvas();window.addEventListener('resize', resizeCanvas);
+
+function random(min,max){ return Math.random()*(max-min)+min; }
+
+function spawnConfetti(n){
+  for(let i=0;i<n;i++){
+    confettiList.push({
+      x: random(0,confettiCanvas.width),
+      y: -10,
+      vx: random(-1.5,1.5),
+      vy: random(2,6),
+      angle: random(0,360),
+      size: random(6,12),
+      color: ['#ffadad','#ffd6a5','#fdffb6','#caffbf','#9bf6ff'][Math.floor(Math.random()*5)],
+      rot: random(-0.1,0.1)
+    });
+  }
+}
+function updateConfetti(){
+  ctx.clearRect(0,0,confettiCanvas.width,confettiCanvas.height);
+  for(let i=confettiList.length-1;i>=0;i--){
+    const p = confettiList[i];
+    p.x += p.vx;
+    p.y += p.vy;
+    p.vy += 0.06;
+    p.angle += p.rot;
+    ctx.save();
+    ctx.translate(p.x,p.y);
+    ctx.rotate(p.angle);
+    ctx.fillStyle = p.color;
+    ctx.fillRect(-p.size/2, -p.size/2, p.size, p.size*1.6);
+    ctx.restore();
+    if(p.y > confettiCanvas.height + 40) confettiList.splice(i,1);
+  }
+  requestAnimationFrame(updateConfetti);
+}
+requestAnimationFrame(updateConfetti);
+
+function burstConfetti(n=20){ spawnConfetti(n); }
+function bigConfetti(){ spawnConfetti(120); }
+
+/* little helpful save function: capture letter element as SVG-ish PNG (works reasonably) */
+function saveLetterAsImage(){
+  const el = letter;
+  const rect = el.getBoundingClientRect();
+  // create clone with inline styles
+  htmlToImage(el).then(dataUrl=>{
+    const a = document.createElement('a');
+    a.href = dataUrl;
+    a.download = 'happy_bday_card.png';
+    a.click();
+  }).catch(err=>{
+    alert('Не удалось сохранить автоматом. Сделай скрин или используй devtools.');
+    console.error(err);
+  });
+}
+
+/* Minimal html->image via SVG foreignObject (works in many modern browsers) */
+function htmlToImage(node){
+  return new Promise((resolve,reject)=>{
+    const rect = node.getBoundingClientRect();
+    const svgNS = 'http://www.w3.org/2000/svg';
+    const svg = document.createElementNS(svgNS,'svg');
+    svg.setAttribute('xmlns','http://www.w3.org/2000/svg');
+    svg.setAttribute('width', rect.width);
+    svg.setAttribute('height', rect.height);
+    const foreign = document.createElementNS(svgNS,'foreignObject');
+    foreign.setAttribute('width','100%');
+    foreign.setAttribute('height','100%');
+
+    // clone node and inline computed styles
+    const clone = node.cloneNode(true);
+    // remove confetti canvas from clone if present
+    const canv = clone.querySelector('canvas'); if(canv) canv.remove();
+    // wrap in div to compute inline style
+    const wrapper = document.createElement('div');
+    wrapper.setAttribute('xmlns','http://www.w3.org/1999/xhtml');
+    wrapper.style.width = rect.width + 'px';
+    wrapper.style.height = rect.height + 'px';
+    wrapper.appendChild(clone);
+    foreign.appendChild(wrapper);
+    svg.appendChild(foreign);
+    const data = new XMLSerializer().serializeToString(svg);
+    const svgBlob = new Blob([data],{type:'image/svg+xml;charset=utf-8'});
+    const url = URL.createObjectURL(svgBlob);
+    const img = new Image();
+    img.onload = ()=>{
+      const canvas = document.createElement('canvas');
+      canvas.width = rect.width * 2;
+      canvas.height = rect.height * 2;
+      const c = canvas.getContext('2d');
+      c.scale(2,2);
+      c.fillStyle = window.getComputedStyle(document.body).background || '#fff';
+      c.fillRect(0,0,rect.width,rect.height);
+      c.drawImage(img, 0, 0);
+      URL.revokeObjectURL(url);
+      const dataUrl = canvas.toDataURL('image/png');
+      resolve(dataUrl);
+    };
+    img.onerror = (e)=>{ reject(e); };
+    img.src = url;
+  });
+}
+
+/* start sequence */
+assembleCake();
+
+/* small UX: prevent accidental text selection and show pointer for prompt */
+document.addEventListener('selectstart', e=>e.preventDefault());
+prompt.addEventListener('click', (e)=>{ e.stopPropagation(); if(!opened) openLetter(); });
+
+/* ensure prompt shows only after everything assembled (already done) */
+
+/* Accessibility: allow keyboard Enter to open when prompt focused */
+prompt.setAttribute('tabindex','0');
+prompt.addEventListener('keydown', (e)=>{ if(e.key==='Enter') openLetter(); });
+
+/* initial tiny confetti for visual effect in first seconds */
+setTimeout(()=>burstConfetti(18), 2600);
+
+/* optional: graceful fallback if images missing - show placeholders */
+document.querySelectorAll('.collage img').forEach(img=>{
+  img.addEventListener('error', ()=>{ img.src = placeholderDataURI(); });
+});
+
+/* placeholder image generator (simple colored block) */
+function placeholderDataURI(){
+  const c = document.createElement('canvas');
+  c.width = 400; c.height = 300;
+  const cx = c.getContext('2d');
+  cx.fillStyle = '#f7d9c7'; cx.fillRect(0,0,c.width,c.height);
+  cx.fillStyle = '#8b5e53'; cx.font = '28px sans-serif'; cx.fillText('Фото', 20, 60);
+  return c.toDataURL('image/png');
+}
+
+/* small tidying: stop confetti after a while to save CPU */
+setTimeout(()=>{ confettiList = []; }, 45000);
+
+</script>
+</body>
+</html>
